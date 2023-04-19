@@ -1,0 +1,18 @@
+
+"""
+
+Signal will be defined in relared model class
+   when a signal received coressponding receiver called and 
+   reciever has Two params: 
+        sender
+        **kwargs       it hold the detail of sender iside this usign 'instance' key can get related sender data that is updated 
+
+"""
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=Order)
+def delte_cart_on_order_save(sender, **kwargs):
+    order: Order = kwargs.get('instance')
+    print("post save method of order")
