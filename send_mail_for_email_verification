@@ -1,0 +1,38 @@
+
+
+
+
+
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'pythonlessons0@gmail.com'   # this is the email of host that will send the email verification message
+EMAIL_HOST_PASSWORD = 'bsvdctbnvaqlszhd'       # this password will be created by going to the google acount admin console
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+PASSWORD_RESET_TIMEOUT = 14400
+
+
+
+
+
+"""
+  This signal will trigger when user is created 
+  uuid will be used for verification-token that will be send with email
+  
+"""
+
+@receiver(post_save,sender=MyUser)
+def send_mail_for_verification(sender, instance, created, **kwargs):
+    if created:
+        subject = "email verification"
+        message = f'click this link to verify your email http://127.0.0.1:8000/{uuid.uuid4()}'
+        receipent_list = [instance.email]
+        send_mail(subject,message,settings.EMAIL_HOST_USER,receipent_list)
+
+    
+    
+
