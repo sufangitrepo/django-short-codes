@@ -30,14 +30,23 @@ PASSWORD_RESET_TIMEOUT = 14400
   
 """
 
-@receiver(post_save,sender=MyUser)
-def send_mail_for_verification(sender, instance, created, **kwargs):
-    if created:
-        subject = "email verification"
-        message = f'click this link to verify your email http://127.0.0.1:8000/{uuid.uuid4()}'
-        receipent_list = [instance.email]
-        send_mail(subject,message,settings.EMAIL_HOST_USER,receipent_list)
 
+
+@receiver(post_save,sender=AppUser)
+def send_mail_for_verification(sender, instance:AppUser , created, **kwargs):
+        
+    print(kwargs)    
+    if created:
+        token = uuid4()
+        instance.verification_token = token
+        
+        subject = "email verification"
+        message = f'click this link to verify your email http://52.66.71.251:8000/foodapp/auth/verify/{instance.verification_token}'
+        receipent_list = [instance.email]
+        try:
+            send_mail(subject,message,settings.EMAIL_HOST_USER,receipent_list)
+        except Exception as e:
+            print(e)  
     
     
 
