@@ -37,8 +37,6 @@ def send_mail_for_verification(sender, instance:AppUser , created, **kwargs):
         
     print(kwargs)    
     if created:
-        token = uuid4()
-        instance.verification_token = token
         
         subject = "email verification"
         message = f'click this link to verify your email http://52.66.71.251:8000/foodapp/auth/verify/{instance.verification_token}'
