@@ -1,0 +1,7 @@
+
+
+1. created_at = models.DateTimeField(auto_now_add=True, editable=False)
+   first time created and not changed when object updated
+  
+2. updated_at = models.DateTimeField(auto_now=True)
+      changed on every time when object updated 
