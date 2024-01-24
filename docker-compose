@@ -1,0 +1,7 @@
+
+
+# redis service port maping
+redis:
+    image: redis:7.2.4-alpine
+    ports:
+      - "6380:6379"
