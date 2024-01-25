@@ -1,0 +1,56 @@
+
+
+1. In settings.py add these 
+
+    # Celery Configuration Options
+    # CELERY_TIMEZONE = "Asia/Karachi"
+    # CELERY_TASK_TRACK_STARTED = True
+    # CELERY_TASK_TIME_LIMIT = 30 * 60
+    
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'  # celery broker
+    # os.environ.get('CELERY_BROKER', 'redis://redis:6379/0')
+    CELERY_RESULT_BACKEND  = 'redis://localhost:6379/0'  # celery result backend
+    # os.environ.get('CELERY_BACKEND', 'redis://redis:6379/0')
+
+
+2.  Add a file in project for celery app in project root
+
+    from __future__ import absolute_import, unicode_literals
+    import os
+    
+    
+    from celery import Celery
+    
+    
+    # os.environ.setdefault("DJANGO_SETTINGS_MODULE","project.settings")
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
+    
+    
+    # app = Celery('project', broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
+    
+    app = Celery('project',
+                 broker='redis://localhost:6379/0',
+                 backend='redis://localhost:6379/0',
+                 include=['project.tasks'])
+    
+    app.config_from_object('django.conf:settings', namespace='CELERY')
+    
+    # Load task modules from all registered Django apps.
+    app.autodiscover_tasks()
+
+
+3. Add initialization in __init__ file wherre celery.py exist
+
+    from .celery import app as celery_app
+
+    __all__ = ('celery_app',)
+
+
+4.  tasks.py will contains task  like this
+
+    from celery import shared_task
+    from django.core.cache import caches
+        
+        @shared_task()
+        def add(a,b):
+            return a+b
