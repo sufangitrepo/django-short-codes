@@ -16,3 +16,9 @@ from django.dispatch import receiver
 def delte_cart_on_order_save(sender, **kwargs):
     order: Order = kwargs.get('instance')
     print("post save method of order")
+
+
+1. if You are creating signals.py file then paste below  code inside apps.py in Config class
+     
+          def ready(self):
+                 import order.signals
