@@ -1,12 +1,5 @@
 
 """
-
-Signal will be defined in relared model class
-   when a signal received coressponding receiver called and 
-   reciever has Two params: 
-        sender
-        **kwargs       it hold the detail of sender iside this usign 'instance' key can get related sender data that is updated 
-
 """
 
 from django.db.models.signals import post_save
