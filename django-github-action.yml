@@ -1,0 +1,58 @@
+name: Django Github ACTION
+
+on:
+    push:
+        branches:
+            - main
+
+    pull_request: 
+        branches: 
+            - main
+
+
+# on:
+#     schedule:
+#         - cron: ''
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+            
+            # 1
+            - name: Set up Python 3.8
+              uses: actions/setup-python@v2
+              with:
+                python-version: 3.8
+            
+            # 2
+            - name: install dependencies
+              run: |
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            
+            # 3
+            - name: Link with flake
+              run: |
+                pip install flake8
+                flake8
+            # 4
+            - name: Coverage report
+              run: |
+                pip install coverage
+                coverage run manage.py test
+                coverage report
+            # 5 
+            - name: Django testing
+              run: |
+                python3 manage.py test
+                
+
+
+
+
+
+
+    
